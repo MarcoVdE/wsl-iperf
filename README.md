@@ -3,7 +3,7 @@
 This project is built as a user-friendly version of running iPerf3 tests using the Windows Subsystem for Linux. <br>
 It's still new, no clean-up has been done, just getting things to work and still need to test in regards to the features for install as need to set up a blank VM. <br>
 
-Features still coming:
+### Features still coming:
 * Separate iPerf into new window
 * iPerf window needs to contain all options for an iPerf test that are usually used
 * Include an option in the iperf window to add your own arguments
@@ -14,6 +14,12 @@ Features still coming:
 * Placeholder text for Entries
 * Swap between dark and light theme as Fyne has it built-in
 
+#### Maybe: https://github.com/RoliSoft/WSL-Distribution-Switcher to run docker instance instead
 <br>
 
 Way down the line I'll consider adding a MacOS variant. 
+
+<br>
+
+### Changes once WSL 2 gets released
+* Add features like mtr, traceroute, etc. that currently cannot be used due to WSL not being a full linux kernel. 
