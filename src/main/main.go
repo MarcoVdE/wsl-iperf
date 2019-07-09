@@ -9,6 +9,7 @@ import (
 	"fyne.io/fyne/widget"
 	"log"
 	"strconv"
+	"time"
 )
 
 func main() {
@@ -89,23 +90,28 @@ func main() {
 							if err != nil {
 								log.Printf("Bandiwdth Error: %s", err)
 							}
-							port, err := strconv.Atoi(iPerf3SpeedWidget.Text)
+							port, err := strconv.Atoi(iPerf3PortWidget.Text)
 							if err != nil {
 								log.Printf("Port Conversion Error: %s", err)
 							}
-							time, err := strconv.Atoi(iPerf3SpeedWidget.Text)
+							time, err := strconv.Atoi(iPerf3TimeWidget.Text)
 							if err != nil {
 								log.Printf("Time Conversion Error: %s", err)
 							}
-							omit, err := strconv.Atoi(iPerf3SpeedWidget.Text)
+							omit, err := strconv.Atoi(iPerf3OmitWidget.Text)
 							if err != nil {
 								log.Printf("Time Conversion Error: %s", err)
+							} else if omit > time {
+								log.Printf("Omit(%is) longer than time(%is)", omit, time)
 							}
 
 							//TODO: rewrite the result as channel bringing back info and ticking the update every 0.3s
-							powershell.RunIPerf3Test(powershell.NewIPerfObject(iPerf3AddressWidget.Text, port,
+							powershellChannel := make(chan string)
+							go iPerfTest(iPerf3AddressWidget.Text, port,
 								bandwidth, iPerf3VerboseWidget.Checked, iPerf3ReverseWidget.Checked,
-								time, omit, iPerf3isUDPWidget.Checked))
+								time, omit, iPerf3isUDPWidget.Checked, powershellChannel)
+
+							go setTextFromChannel(iPerf3Output, powershellChannel)
 
 						}),
 						widget.NewButton("Copy Result", func() {
@@ -136,6 +142,17 @@ func main() {
 			}),
 		)) //end of Main VBox and window content.
 	w.ShowAndRun()
+}
+
+func iPerfTest(address string, port int, bandwidth int, verbose bool, reverse bool, time int, omit int, isUDP bool, channel chan string) {
+	channel <- powershell.RunIPerf3Test(powershell.NewIPerfObject(address, port,
+		bandwidth, verbose, reverse,
+		time, omit, isUDP))
+}
+
+func setTextFromChannel(output *widget.Entry, channel chan string) {
+	output.SetText(<-channel)
+	time.Sleep(1000)
 }
 
 func InstallIPerf3() {
