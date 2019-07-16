@@ -25,6 +25,7 @@ type iPerfObject struct {
 }
 
 func EnableWSL() {
+	//TODO: Check if this runs without elevation on test machine.
 	fmt.Println("Enabling WSL")
 	//startPowerShellSession()
 	pscommand := "Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux"
@@ -38,6 +39,7 @@ func EnableWSL() {
 }
 
 func InstallUbuntuWSL() {
+	//TODO: Check if this runs without elevation on test machine.
 	appName := "wsl-ubuntu-1804"
 	fmt.Println("Installing Ubuntu WSL")
 	fmt.Println("Initializing download")
@@ -70,6 +72,7 @@ func InstallUbuntuWSL() {
 }
 
 func InstallIPerf3WSL() {
+	//TODO: Check if this runs without elevation on test machine.
 	fmt.Println("Installing iperf")
 	pscommand := make([]string, 1)
 	pscommand[0] = "bash"

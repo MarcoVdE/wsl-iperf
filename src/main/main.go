@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"fyne.io/fyne"
 	"fyne.io/fyne/app"
+	"fyne.io/fyne/dialog"
 	"fyne.io/fyne/layout"
 	"fyne.io/fyne/widget"
 	"log"
@@ -13,7 +14,6 @@ import (
 )
 
 func main() {
-	//TODO: Convert to tabbed container, other option: terminate main window on opening iPerf3 and starting new main window.
 	fmt.Println("starting the project")
 
 	main_app := app.New()
@@ -120,8 +120,7 @@ func main() {
 								clipboard := fyne.Clipboard(w.Clipboard())
 								clipboard.SetContent(iPerf3Output.Text)
 							} else {
-								widget.NewModalPopUp(widget.NewLabel("No text to copy"), w.Canvas())
-								//TODO: close modal.
+								dialog.ShowInformation("No results", "No text to copy.", w)
 							}
 						}),
 					),
