@@ -94,22 +94,22 @@ func main() {
 							if err != nil {
 								log.Printf("Port Conversion Error: %s", err)
 							}
-							time, err := strconv.Atoi(iPerf3TimeWidget.Text)
+							iperfTime, err := strconv.Atoi(iPerf3TimeWidget.Text)
 							if err != nil {
 								log.Printf("Time Conversion Error: %s", err)
 							}
 							omit, err := strconv.Atoi(iPerf3OmitWidget.Text)
 							if err != nil {
 								log.Printf("Time Conversion Error: %s", err)
-							} else if omit > time {
-								log.Printf("Omit(%is) longer than time(%is)", omit, time)
+							} else if omit > iperfTime {
+								log.Printf("Omit(%is) longer than time(%is)", omit, iperfTime)
 							}
 
 							//TODO: rewrite the result as channel bringing back info and ticking the update every 0.3s
 							powershellChannel := make(chan string)
 							go iPerfTest(iPerf3AddressWidget.Text, port,
 								bandwidth, iPerf3VerboseWidget.Checked, iPerf3ReverseWidget.Checked,
-								time, omit, iPerf3isUDPWidget.Checked, powershellChannel)
+								iperfTime, omit, iPerf3isUDPWidget.Checked, powershellChannel)
 
 							go setTextFromChannel(iPerf3Output, powershellChannel)
 
